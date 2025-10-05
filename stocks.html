@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Stock Analyzer - Live Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0a192f, #112240);
+      color: #e6f1ff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      text-align: center;
+      color: #64ffda;
+      font-size: 28px;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      gap: 30px;
+    }
+    .search-box {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 500px;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    .search-box button {
+      background: #64ffda;
+      border: none;
+      color: #0a192f;
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .search-box button:hover {
+      background: #52e0c4;
+    }
+    .stock-info {
+      text-align: center;
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+    }
+    .stock-info h2 {
+      color: #64ffda;
+      margin-bottom: 10px;
+    }
+    .chart-container {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      max-width: 700px;
+    }
+    .timeframe-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .timeframe-buttons button {
+      background: #64ffda;
+      border: none;
+      color: #0a192f;
+      padding: 8px 15px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .timeframe-buttons button.active {
+      background: #52e0c4;
+    }
+    .invest-btn {
+      background: #64ffda;
+      color: #0a192f;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .invest-btn:hover {
+      background: #52e0c4;
+    }
+  </style>
+</head>
+<body>
+  <header>AI Stock Analyzer</header>
+  <div class="container">
+    <div class="search-box">
+      <input type="text" id="stockInput" placeholder="Enter stock symbol (e.g., AAPL, TSLA)" />
+      <button onclick="fetchStockData()">Search</button>
+    </div>
+
+    <div class="stock-info" id="stockInfo">
+      <h2>Search for a stock to view details</h2>
+    </div>
+
+    <div class="chart-container">
+      <div class="timeframe-buttons">
+        <button class="active" onclick="changeTimeframe('daily')">Daily</button>
+        <button onclick="changeTimeframe('monthly')">Monthly</button>
+        <button onclick="changeTimeframe('yearly')">Yearly</button>
+      </div>
+      <canvas id="stockChart"></canvas>
+    </div>
+
+    <button class="invest-btn" onclick="investNow()">Invest Now</button>
+  </div>
+
+  <script>
+    let chart;
+    const ctx = document.getElementById('stockChart').getContext('2d');
+
+    function fetchStockData() {
+      const symbol = document.getElementById('stockInput').value.toUpperCase();
+      if (!symbol) {
+        alert('Please enter a stock symbol');
+        return;
+      }
+
+      // Simulated stock value and growth data (replace with API call if needed)
+      const value = (Math.random() * 1000 + 100).toFixed(2);
+      document.getElementById('stockInfo').innerHTML = `
+        <h2>${symbol}</h2>
+        <p>Current Value: <strong>$${value}</strong></p>
+      `;
+
+      drawChart('daily');
+    }
+
+    function drawChart(type) {
+      const datasets = {
+        daily: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          data: [120, 130, 128, 140, 150]
+        },
+        monthly: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          data: [800, 820, 850, 870, 890, 920]
+        },
+        yearly: {
+          labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
+          data: [600, 720, 830, 940, 1030, 1200]
+        }
+      };
+
+      const current = datasets[type];
+
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: current.labels,
+          datasets: [{
+            label: 'Stock Value ($)',
+            data: current.data,
+            borderColor: '#64ffda',
+            backgroundColor: 'rgba(100,255,218,0.1)',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,0.1)' } },
+            y: { grid: { color: 'rgba(255,255,255,0.1)' } }
+          }
+        }
+      });
+    }
+
+    function changeTimeframe(type) {
+      document.querySelectorAll('.timeframe-buttons button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      drawChart(type);
+    }
+
+    function investNow() {
+      window.location.href = 'https://your-payment-gateway-link.com';
+    }
+  </script>
+</body>
+</html>

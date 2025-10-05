@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Stock Analyzer - Login / Sign Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0a192f, #112240);
+      color: #e6f1ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 40px;
+      width: 400px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+    h2 {
+      color: #64ffda;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      background: #64ffda;
+      border: none;
+      color: #0a192f;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #52e0c4;
+    }
+    .toggle {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .toggle span {
+      color: #64ffda;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="loginForm">
+      <h2>Login to Your Account</h2>
+      <input type="text" id="loginUser" placeholder="User ID" required>
+      <input type="password" id="loginPass" placeholder="Password" required>
+      <button onclick="loginUser()">Login</button>
+      <div class="toggle">Don't have an account? <span onclick="showSignUp()">Sign up</span></div>
+    </div>
+
+    <div id="signupForm" class="hidden">
+      <h2>Create an Account</h2>
+      <input type="text" id="signupUser" placeholder="Choose a User ID" required>
+       <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="signupPass" placeholder="Choose a Password" required>
+      <button onclick="createAccount()">Sign Up</button>
+      <div class="toggle">Already have an account? <span onclick="showLogin()">Login</span></div>
+    </div>
+  </div>
+
+  <script>
+    function showSignUp() {
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('signupForm').classList.remove('hidden');
+    }
+
+    function showLogin() {
+      document.getElementById('signupForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+    }
+
+    function createAccount() {
+      const user = document.getElementById('signupUser').value;
+      const pass = document.getElementById('signupPass').value;
+      if (user && pass) {
+        localStorage.setItem('userID', user);
+        localStorage.setItem('password', pass);
+        alert('Account created successfully! Please log in.');
+        showLogin();
+      } else {
+        alert('Please fill in all fields');
+      }
+    }
+
+    function loginUser() {
+      const user = document.getElementById('loginUser').value;
+      const pass = document.getElementById('loginPass').value;
+      const storedUser = localStorage.getItem('userID');
+      const storedPass = localStorage.getItem('password');
+
+      if (user === storedUser && pass === storedPass) {
+        alert('Login successful! Redirecting to home page...');
+        window.location.href = 'index.html'; // redirect to home page
+      } else {
+        alert('Invalid credentials! Please try again or create an account.');
+      }
+    }
+
+    // Allow login with Enter key
+    document.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        if (!document.getElementById('loginForm').classList.contains('hidden')) {
+          loginUser();
+        } else {
+          createAccount();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

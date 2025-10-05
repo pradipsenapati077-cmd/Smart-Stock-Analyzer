@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="hackathon.css">
+    
+    
+</head>
+<body>
+    
+<a href=""></a>
+<nav>
+  <ul>
+   
+    <li> <a href="registration.html"><button>login/sign up</button></a></li>
+    <li> <a href="Profile details.html"><button>Profile Details</button></a></li>
+    <li> <a href="Stocks.html"><button>Stocks</button></a></li>
+    
+  </ul>
+</nav>
+
+<section id="home" style="padding:20px;">
+  <h2>Welcome to Your AI-Powered Investment Platform</h2>
+  <p>Explore stocks, get personalized suggestions, and make informed investments.</p>
+</section>
+
+<section id="stock-selection" style="padding:20px;">
+  <h3>Select Stocks to Invest In</h3>
+  <input type="text" placeholder="Enter Stock Symbol" style="padding:10px; width: 300px; font-size:16px;" />
+  <button style="padding:10px 20px; margin-left:10px;">Analyze</button>
+</section>
+
+<section id="investment-suggestion" style="padding:20px; background:#f2f2f2; margin-top:20px; display:none;">
+  <h3>Investment Effortability Suggestion</h3>
+  <p id="suggestion-text" style="font-weight:bold;"></p>
+</section>
+
+
+
+ <!-- <div class="form-container" id="formContainer">
+    <h2 id="formTitle">Login</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+
+    <form id="signupForm" style="display: none;">
+      <input type="text" id="signupName" placeholder="Full Name" required />
+      <input type="email" id="signupEmail" placeholder="Email" required />
+      <input type="password" id="signupPassword" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <div class="switch">
+      <span id="switchText">Don't have an account? <a id="toggleForm">Sign Up</a></span>
+    </div>
+  </div> -->
+
+
+
+
+<section id="top-stocks" style="padding:20px; margin-top:20px;">
+  <h3>Top 10 Profitable Stocks Today</h3>
+  <ul style="list-style:none; padding:0;">
+    <li>AAPL - Apple Inc.</li>
+    <li>MSFT - Microsoft Corp.</li>
+    <li>GOOGL - Alphabet Inc.</li>
+    <li>AMZN - Amazon.com Inc.</li>
+    <li>TSLA - Tesla Inc.</li>
+    <li>NVDA - NVIDIA Corporation</li>
+    <li>JPM - JPMorgan Chase & Co.</li>
+    <li>V - Visa Inc.</li>
+    <li>DIS - Walt Disney Co.</li>
+    <li>META - Meta Platforms Inc.</li>
+  </ul>
+</section>
+
+<section id="chat-with-ai" style="padding:20px; margin-top:20px; border:1px solid #ccc;">
+  <h3>Chat with AI Assistant</h3>
+  <textarea id="ai-chat-input" rows="4" style="width: 100%; padding:10px;" placeholder="Ask AI about stocks or investment advice..."></textarea>
+  <button style="padding:10px 25px; margin-top:10px;">Send</button>
+  <div id="ai-chat-response" style="margin-top:15px; background:#e8e8e8; padding:10px; min-height:100px;"></div>
+</section>
+
+<script>// Navigation button events (simulate navigation)
+// document.querySelectorAll("nav ul li button").forEach(button => {
+//   button.addEventListener("click", () => {
+//     alert(`You clicked '${button.textContent}' - navigation not implemented yet.`);
+//   });
+// });
+
+// Stock analysis input and button
+const stockInput = document.querySelector("#stock-selection input");
+const analyzeBtn = document.querySelector("#stock-selection button");
+const suggestionSection = document.getElementById("investment-suggestion");
+const suggestionText = document.getElementById("suggestion-text");
+
+analyzeBtn.addEventListener("click", () => {
+  const symbol = stockInput.value.trim().toUpperCase();
+  if (!symbol) {
+    alert("Please enter a stock symbol to analyze.");
+    return;
+  }
+  showSuggestion(symbol);
+});
+
+// Press Enter to analyze stock symbol
+stockInput.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    analyzeBtn.click();
+  }
+});
+
+function showSuggestion(symbol) {
+  // Example risky stocks - customize as needed
+  const riskyStocks = ["TSLA", "GME", "AMC"];
+
+  suggestionSection.style.display = "block";
+
+  if (riskyStocks.includes(symbol)) {
+    suggestionSection.className = "negative";
+    suggestionText.textContent = `Investing in ${symbol} right now might be high risk based on your profile. Please evaluate carefully.`;
+  } else {
+    suggestionSection.className = "positive";
+    suggestionText.textContent = `Investment in ${symbol} looks suitable for you at this time.`;
+  }
+}
+
+// Chat with AI functionality (basic simulation)
+const chatInput = document.getElementById("ai-chat-input");
+const chatBtn = document.querySelector("#chat-with-ai button");
+const chatResponse = document.getElementById("ai-chat-response");
+
+chatBtn.addEventListener("click", () => {
+  const question = chatInput.value.trim();
+  if (!question) {
+    alert("Please enter a question for the AI.");
+    return;
+  }
+  chatResponse.textContent = "AI is thinking...";
+  setTimeout(() => {
+    // Dummy response generation logic
+    chatResponse.textContent = `AI Response: Based on your question "${question}", analysis shows potential positive investment opportunities. Further detailed analysis is recommended.`;
+  }, 1500);
+});
+
+// //login or sign up
+//     const formContainer = document.getElementById('formContainer');
+//     const loginForm = document.getElementById('loginForm');
+//     const signupForm = document.getElementById('signupForm');
+//     const formTitle = document.getElementById('formTitle');
+//     const toggleForm = document.getElementById('toggleForm');
+//     const switchText = document.getElementById('switchText');
+
+//     toggleForm.addEventListener('click', () => {
+//       if (loginForm.style.display === 'none') {
+//         // Switch to Login
+//         loginForm.style.display = 'block';
+//         signupForm.style.display = 'none';
+//         formTitle.textContent = 'Login';
+//         switchText.innerHTML = `Don't have an account? <a id="toggleForm">Sign Up</a>`;
+//       } else {
+//         // Switch to Sign Up
+//         loginForm.style.display = 'none';
+//         signupForm.style.display = 'block';
+//         formTitle.textContent = 'Sign Up';
+//         switchText.innerHTML = `Already have an account? <a id="toggleForm">Login</a>`;
+//       }
+//     });
+
+//     // Handle form submissions (demo purpose)
+//     loginForm.addEventListener('submit', (e) => {
+//       e.preventDefault();
+//       alert('Logged in successfully!');
+//     });
+
+//     signupForm.addEventListener('submit', (e) => {
+//       e.preventDefault();
+//       alert('Account created successfully!');
+//     });
+</script>
+</body>
+</html>
